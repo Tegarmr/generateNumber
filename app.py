@@ -1,25 +1,3 @@
-# =============================================================================
-# Problem 3: Handwritten Digit Generation - Streamlit Web App
-#
-# Framework: Streamlit
-# Model: Conditional Variational Autoencoder (CVAE)
-#
-# Instruksi:
-# 1. Pastikan Anda sudah mengunduh 'cvae_mnist.pth' dari Google Colab.
-# 2. Buat folder baru di komputer Anda.
-# 3. Simpan file ini sebagai 'app.py' di dalam folder tersebut.
-# 4. Letakkan file 'cvae_mnist.pth' di folder yang sama.
-# 5. Buat file 'requirements.txt' di folder yang sama (isinya ada di bawah).
-# 6. Buka terminal atau command prompt, navigasi ke folder tersebut, lalu jalankan:
-#    pip install -r requirements.txt
-#    streamlit run app.py
-# 7. Aplikasi akan terbuka di browser Anda.
-#
-# Untuk deployment (agar bisa diakses publik):
-# - Upload folder ini (app.py, cvae_mnist.pth, requirements.txt) ke GitHub.
-# - Hubungkan repository GitHub Anda ke Streamlit Community Cloud (share.streamlit.io).
-# =============================================================================
-
 import streamlit as st
 import torch
 import torch.nn as nn
@@ -117,7 +95,9 @@ def generate_images(model, selected_digit, num_images=5):
 
 # --- Antarmuka Pengguna (UI) Streamlit ---
 
-st.set_page_config(layout="wide")
+# PERBAIKAN: Menambahkan initial_sidebar_state="expanded" agar sidebar selalu terbuka
+st.set_page_config(layout="wide", initial_sidebar_state="expanded")
+
 st.title("🖌️ Handwritten Digit Image Generator")
 st.markdown("Aplikasi ini menghasilkan gambar tulisan tangan angka (seperti dataset MNIST) menggunakan model *Conditional VAE* yang dilatih dengan PyTorch.")
 
@@ -147,7 +127,8 @@ if model:
         if generated_images:
             for i, (col, img) in enumerate(zip(cols, generated_images)):
                 with col:
-                    st.image(img, caption=f'Sample {i+1}', width=150, use_column_width='auto')
+                    # PERBAIKAN: Mengganti 'use_column_width' dengan 'use_container_width'
+                    st.image(img, caption=f'Sample {i+1}', use_container_width=True)
         else:
             st.warning("Gagal membuat gambar.")
 else:
